@@ -36,10 +36,21 @@ def library_mode():
 def binary_mode(vault_password_filename=""):
     filename = ""
     if vault_password_filename != "":
-        for dirName, subdirList, fileList in os.walk(os.path.dirname(argv[1])):
-            if vault_password_filename in fileList:
-                filename = os.path.join(dirName, vault_password_filename)
-                brake
+        path_split = []
+        dirname = os.path.dirname(argv[1])
+        while True:
+            print dirname
+            if vault_password_filename in os.listdir(dirname):
+                filename = os.path.join(dirname, vault_password_filename)
+                break
+            dirname, leaf = os.path.split(dirname)
+            if (leaf):
+                path_split = [leaf] + path_split #Adds one element, at the beginning of the list
+            else:
+                #Uncomment the following line to have also the drive, in the format "Z:\"
+                #path_split = [dirname] + path_split
+                break
+
     if filename == "":
         import uuid
         random_name = uuid.uuid4().hex
@@ -47,7 +58,7 @@ def binary_mode(vault_password_filename=""):
         temp_file = open(filename, "w+")
         temp_file.write(argv[2])
         temp_file.close()
-
+    print filename
     cmd = [argv[4], argv[3], "--vault-password-file=" + filename, argv[1] ]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     errors = p1.communicate()[1]
