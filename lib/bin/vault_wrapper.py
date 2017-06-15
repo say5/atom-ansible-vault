@@ -35,15 +35,19 @@ def library_mode():
 
 def binary_mode(vault_password_filename=""):
     filename = ""
-    if vault_password_filename == "":
+    if vault_password_filename != "":
+        for dirName, subdirList, fileList in os.walk(os.path.dirname(argv[1])):
+            if vault_password_filename in fileList:
+                filename = os.path.join(dirName, vault_password_filename)
+                brake
+    if filename == "":
         import uuid
         random_name = uuid.uuid4().hex
         filename = "/tmp/" + random_name + ".vault"
         temp_file = open(filename, "w+")
         temp_file.write(argv[2])
         temp_file.close()
-    else:
-        filename = vault_password_filename
+
     cmd = [argv[4], argv[3], "--vault-password-file=" + filename, argv[1] ]
     p1 = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     errors = p1.communicate()[1]
