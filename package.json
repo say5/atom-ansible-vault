@@ -9,7 +9,7 @@
     "encrypt",
     "decrypt"
   ],
-  "repository": "https://github.com/sydro/atom-ansible-vault",
+  "repository": "https://github.com/say5/atom-ansible-vault",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
